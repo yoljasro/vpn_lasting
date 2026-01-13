@@ -1,5 +1,3 @@
-
-
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -14,7 +12,7 @@ app.use(express.json());
 
 app.use("/api/vpn", vpnRoutes);
 
-mongoose.connect("mongodb+srv://saidaliyevjasur450_db_user:irpVfZLLCH07uETG@vpn.lvwwvtq.mongodb.net/")
+mongoose.connect("mongodb+srv://saidaliyevjasur450_db_user:irpVfZLLCH07uETG@vpn.lvwwvtq.mongodb.net/vpn_db")
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.error("MongoDB connection error:", err));
 

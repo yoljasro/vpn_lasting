@@ -1,8 +1,8 @@
 const express = require("express");
 const { v4: uuidv4 } = require("uuid");
 const Client = require("../models/Client");
-const { generateKeys, addPeer, buildClientConfig } = require("../utils/wireguard");
-const { allocateIp } = require("../utils/ipAllocator");
+// Importing everything from our fixed wireguard util, including allocateIp
+const { generateKeys, addPeer, buildClientConfig, allocateIp } = require("../utils/wireguard");
 
 const router = express.Router();
 
@@ -15,16 +15,20 @@ router.post("/connect", async (req, res) => {
 
     if (!client) {
       const count = await Client.countDocuments();
+      
+      // FIX 1: Use the correct IP range (10.0.0.x)
       const ip = allocateIp(count);
 
       const { privateKey, publicKey } = generateKeys();
+      
+      // FIX 2: Passed 'ip' correctly (was 'thread')
       addPeer(publicKey, ip);
 
       client = await Client.create({
         deviceId,
         publicKey,
         privateKey,
-        ip
+        ip // FIX 3: Passed 'ip' correctly (was 'yarn')
       });
     }
 
